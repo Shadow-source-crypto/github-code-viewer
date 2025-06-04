@@ -1,0 +1,53 @@
+import 'package:flutter/material.dart';
+
+void main() {
+  runApp(const ShockwaveApp());
+}
+
+class ShockwaveApp extends StatelessWidget {
+  const ShockwaveApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const MaterialApp(
+      home: ShockwaveScreen(),
+      debugShowCheckedModeBanner: false,
+    );
+  }
+}
+
+class ShockwaveScreen extends StatefulWidget {
+  const ShockwaveScreen({super.key});
+
+  @override
+  State<ShockwaveScreen> createState() => _ShockwaveScreenState();
+}
+
+class _ShockwaveScreenState extends State<ShockwaveScreen>
+    with SingleTickerProviderStateMixin {
+  final List<Offset> _touchPoints = [];
+  late AnimationController _controller;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      vsync: this,
+      duration: const Duration(seconds: 1),
+    )
+      ..addListener(() {
+        setState(() {});
+      });
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  void _handleTapDown(TapDownDetails details) {
+    setState(() {
+      _touchPoints.add(details.localPosition);
+      if (_touchPoints.length > 10) {
+        _touchPoints.removeAt(0); // avoid too many shockwaves
